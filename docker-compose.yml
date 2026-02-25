@@ -1,0 +1,56 @@
+services:
+  # Ansible 컨트롤 노드
+  ansible-server:
+    build: . # 현재 폴더의 Dockerfile을 빌드해서 사용
+    container_name: ansible-server
+    hostname: ansible-server
+    privileged: true
+    ports:
+      - "2220:22"
+    volumes:
+      - ./ansible_data:/root/ansible
+      - ./ansible_ssh:/root/.ssh # SSH 키 보관용
+    networks:
+      ansible-net:
+        ipv4_address: 192.168.1.10
+
+  # 타겟 노드 1~3 (이 노드들도 SSH가 필요하므로 build: . 사용)
+  ansible-node01:
+    build: .
+    container_name: ansible-node01
+    hostname: ansible-node01
+    privileged: true
+    ports:
+      - "2221:22"
+    networks:
+      ansible-net:
+        ipv4_address: 192.168.1.11
+
+  ansible-node02:
+    build: .
+    container_name: ansible-node02
+    hostname: ansible-node02
+    privileged: true
+    ports:
+      - "2222:22"
+    networks:
+      ansible-net:
+        ipv4_address: 192.168.1.12
+
+  ansible-node03:
+    build: .
+    container_name: ansible-node03
+    hostname: ansible-node03
+    privileged: true
+    ports:
+      - "2223:22"
+    networks:
+      ansible-net:
+        ipv4_address: 192.168.1.13
+
+networks:
+  ansible-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24

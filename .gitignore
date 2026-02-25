@@ -1,0 +1,5 @@
+ansible_ssh/**
+ansible_data/**
+node01_data/**
+node02_data/**
+node03_data/**
