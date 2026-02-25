@@ -1,0 +1,10 @@
+---
+- hosts: nginx
+  remote_user: root
+  tasks:
+   - name: install epel-release
+     yum: name=epel-release state=latest
+   - name: install nginx web server
+     yum: name=nginx state=present
+   - name: Start nginx web server
+     service: name=nginx state=started
