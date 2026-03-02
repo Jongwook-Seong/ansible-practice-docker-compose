@@ -6,5 +6,13 @@
      yum: name=epel-release state=latest
    - name: install nginx web server
      yum: name=nginx state=present
-   - name: Start nginx web server
-     service: name=nginx state=started
+   - name: Upload default index.html for web server
+     copy: src=index.html dest=/usr/share/nginx/html/ mode=0644
+  #  VM 환경의 경우 service 모듈 사용
+  #  - name: Start nginx web server
+  #   service: name=nginx state=started
+  #  도커 컨테이너 환경의 경우 command 모듈 사용
+   - name: Start nginx web server manually
+     command: /usr/sbin/nginx
+     args:
+       creates: /run/nginx.pid
